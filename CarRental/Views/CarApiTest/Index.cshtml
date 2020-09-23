@@ -1,0 +1,150 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<div class="tile">
+    <h3 class="tile-title">Category Web Api</h3>
+    <div class="tile-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                    Category Name <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input type="text" id="Name" required="required" class="form-control col-md-7 col-xs-12" name="Name">
+                </div>
+            </div>
+
+            <div class="ln_solid"></div>
+            <input type="hidden" id="ID" name="ID" />
+            <div class="form-group">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                    <button type="submit" class="btn btn-success" id="btn1">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="tile">
+    <h3 class="tile-title">Categories List</h3>
+    <div class="table-responsive">
+        <table class="table" id="tab1">
+                <tr class="headings">
+                    <th class="column-title" width="280px"># </th>
+                    <th class="column-title" width="280px">Name </th>
+                    <th class="column-title no-link last" width="240px">
+                        <span class="nobr">Action</span>
+                    </th>
+                </tr>
+        </table>
+    </div>
+
+
+</div>
+    
+
+<script>
+    function AddEditRecord(id, name) {
+        $("#Name").val(name);
+        $("#ID").val(id);
+    }
+
+    function UpdateRecord() {
+        var Name = $("#Name").val();
+        $.ajax({
+            type: "put",
+            contentType: "application/json;charset=utf-8",
+            url: "/api/CarCategoriesWebApi/" + $("#ID").val(),
+            data: JSON.stringify({
+                ID: $("#ID").val(),
+                Name: $("#Name").val(),
+            }),
+
+            dataType: "JSON",
+
+            success: function (data) {
+                $("#tab1").find("tr:gt(0)").remove();
+                $.getJSON("/api/CarCategoriesWebApi/", function (data) {
+                    $("#tab1").css("display", "block");
+                    $.each(data, function (key, val) {
+                        $("<tr class='even pointer'><td width='280px'>" + val.ID + "</td><td width='180px'>" + val.Name + "</td><td width='240px'>" + "<button class='btn btn-warning btn-xs' onclick='AddEditRecord(" + val.ID + ',"' + val.Name + '"' + ");'" + ">Edit</button><button class='btn btn-danger btn-xs' onclick='DeleteRecord(" + val.ID + ");'" + ">Delete</button>" + "</td></tr>").appendTo($("#tab1"));
+
+                    })
+
+                })
+                $("#Name").val('');
+            }
+        });
+    }
+    //Delete
+    function DeleteRecord(ID) {
+        $.ajax({
+
+            type: "DELETE",
+
+            contentType: "application/json;charset=utf-8",
+
+            url: "/api/CarCategoriesWebApi/" + ID,
+
+            data: JSON.stringify({
+                id: ID,
+            }),
+            dataType: "JSON",
+            success: function (data) {
+                $("#tab1").find("tr:gt(0)").remove();
+                $.getJSON("/api/CarCategoriesWebApi/", function (data) {
+                    $("#tab1").css("display", "block");
+                    $.each(data, function (key, val) {
+                        $("<tr class='even pointer'><td width='180px'>" + val.ID + "</td><td width='180px'>" + val.Name + "</td><td width='240px'>" + "<button class='btn btn-warning btn-xs' onclick='AddEditRecord(" + val.ID + ',"' + val.Name + '"' + ");'" + ">Edit</button><button class='btn btn-danger btn-xs' onclick='DeleteRecord(" + val.ID + ");'" + ">Delete</button>" + "</td></tr>").appendTo($("#tab1"));
+
+                    })
+
+                })
+            }
+        });
+    }
+    $(document).ready(function () {
+        $("#tab1").css("display", "none");
+        $.getJSON("/api/CarCategoriesWebApi/", function (data) {
+            $("#tab1").css("display", "block");
+            $.each(data, function (key, val) {
+                $("<tr class='even pointer'><td width='180px'>" + val.ID + "</td><td width='180px'>" + val.Name + "</td><td width='240px'>" + "<button class='btn btn-warning btn-xs' onclick='AddEditRecord(" + val.ID + ',"' + val.Name + '"' + ");'" + ">Edit</button><button class='btn btn-danger btn-xs' onclick='DeleteRecord(" + val.ID + ");'" + ">Delete</button>" + "</td></tr>").appendTo($("#tab1"));
+            });
+        })
+
+        //POST
+        $("#btn1").click(function () {
+            if ($("#ID").val() > 0) {
+                UpdateRecord();
+            }
+            else {
+                var Name = $("#Name").val();
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    url: "/api/CarCategoriesWebApi/",
+                    data: JSON.stringify({
+                        Name: $("#Name").val(),
+                    }),
+                    dataType: "JSON",
+                    success: function (data) {
+                        $("#ID").val('');
+                        $("#tab1").find("tr:gt(0)").remove();
+                        $.getJSON("/api/CarCategoriesWebApi/", function (data) {
+                            $("#tab1").css("display", "block");
+                            $.each(data, function (key, val) {
+                                $("<tr class='even pointer'><td width='180px'>" + val.ID + "</td><td width='180px'>" + val.Name + "</td><td width='240px'>" + "<button class='btn btn-warning btn-xs' onclick='AddEditRecord(" + val.ID + ',"' + val.Name + '"' + ");'" + ">Edit</button><button class='btn btn-danger btn-xs' onclick='DeleteRecord(" + val.ID + ");'" + ">Delete</button>" + "</td></tr>").appendTo($("#tab1"));
+
+                            })
+
+                        })
+                    }
+                });
+            }
+
+        })
+    });
+
+</script>

@@ -1,0 +1,28 @@
+﻿@model CarRental.Models.CarCategory
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="tile">
+    <h3 class="tile-title">Detail Car Category</h3>
+    <div class="tile-body">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+        </dl>
+    </div>
+</div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+
+
+

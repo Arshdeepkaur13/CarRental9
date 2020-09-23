@@ -1,0 +1,61 @@
+﻿@model IEnumerable<CarRental.Models.Fine>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<p><button class="btn btn-primary" onclick="location.href='@Url.Action("Create", "Fines")';return false;">Create</button></p>
+
+<div class="tile">
+    <h3 class="tile-title">Car Fines</h3>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CarRentals.ID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AmountFine)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FineDeposit)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DepositDate)
+                    </th>
+                    <th></th>
+                </tr>
+
+            </thead>
+            <tbody>
+
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CarRentals.ID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AmountFine)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FineDeposit)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DepositDate)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                            </td>
+                        </tr>
+                    }
+
+            </tbody>
+        </table>
+    </div>
+</div>

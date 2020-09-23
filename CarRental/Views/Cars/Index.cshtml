@@ -1,0 +1,57 @@
+﻿@model IEnumerable<CarRental.Models.Car>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<p><button class="btn btn-primary" onclick="location.href='@Url.Action("Create", "Cars")';return false;">Create</button></p>
+
+
+
+<div class="col-md-12">
+    <div class="tile">
+        <h3 class="tile-title">Cars</h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CarCategory.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CarType.TypeName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CarName)
+                        </th>
+                    </tr>
+
+                </thead>
+                <tbody>
+
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CarCategory.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CarType.TypeName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CarName)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
